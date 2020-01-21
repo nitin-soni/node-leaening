@@ -8,7 +8,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { LeftMenuComponent } from './components/left-menu/left-menu.component';
 import { AuthModule } from './modules/auth/auth.module';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { AuthGuard } from './guards/auth.guard';
+import { AuthGuard } from './guards';
 import LocalHi from '@angular/common/locales/hi';
 import { registerLocaleData } from '@angular/common';
 
