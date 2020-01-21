@@ -1,7 +1,8 @@
 const path = require('path');
 const express = require('express');
 const compression = require("compression");
-const mongoose = require('./configs/db');
+// const mongoose = require('./configs/mongoose');
+const sequelize = require('./configs/sequelize');
 const _port = 4100;
 const publicDirPath = path.join(__dirname, '../application/dist/application');
 const app = express();
@@ -27,14 +28,6 @@ app.get('/', (request, response)=>{
 });
 
 
-app.listen(3000, function(){
-    
-/** */
-
-const Cat = mongoose.model('Cat', { name: String });
-const kitty = new Cat({ name: 'Zildjissan' });
-kitty.save(function (err){
-    console.log(err)
-}).then(() => console.log('meow'));
-    console.log('Listening ')
+app.listen(_port, function(){
+    console.log('Listening on port ' + _port);
 });
