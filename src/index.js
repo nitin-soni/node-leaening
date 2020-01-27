@@ -1,27 +1,35 @@
 const path = require('path');
 const express = require('express');
 const compression = require("compression");
+const logger = require('morgan');
+const bodyParser = require('body-parser');
+
+//import controller routes
+var userRoutes = require('./controllers/user');
+var authRoutes = require('./controllers/auth');
+
+
 // const mongoose = require('./configs/mongoose');
-const sequelize = require('./configs/sequelize');
-const _port = 4100;
-const publicDirPath = path.join(__dirname, '../application/dist/application');
+// const sequelize = require('./configs/sequelize');
+const _port =  4100;
+const adminPublicDirPath = path.join(__dirname, '../application/dist/application');
+const appPublicDirPath = path.join(__dirname, '../my-app/build');
+
+
 const app = express();
 
-var user = require('./controllers/user');
 
 app.set('view engine', 'hbs');
+app.use(logger('dev'));
+app.use(bodyParser.json());
 app.use(compression());
-// app.use(express.static(publicDirPath))
-// app.server.get('*.*', express.static(publicDirPath, {maxAge: '1y'}));
+// app.use(express.static(adminPublicDirPath))
+app.use('/admin', express.static(adminPublicDirPath, {maxAge: '1y'}));
+app.use('/', express.static(appPublicDirPath, {maxAge: '1y'}));
 
-app.get('*.*', express.static(publicDirPath, {maxAge: '1y'}));
 
-// ---- SERVE APLICATION PATHS ---- //
-app.all('*', function (req, res) {
-    res.status(200).sendFile(`/`, {root: publicDirPath});
-});
-
-app.use('/user', user);
+app.use('/api/user', userRoutes);
+app.use('/api/auth', authRoutes);
 
 app.get('/', (request, response)=>{
     response.send('Hello');
